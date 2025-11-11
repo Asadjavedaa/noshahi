@@ -4,20 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In/Register</title>
-    <!-- Load Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Lucide Icons for simplicity in social icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         /* Custom font import for 'Inter' */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         
-        :root {
-            --primary-text: #2c2c2c;
-            --secondary-text: #6b7280;
-            --alert-bg: #fef2f2;
-            --alert-text: #b91c1c;
-            --button-bg: #000000;
+        /* 🛠️ CORE FIXES & RESET */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%; 
         }
 
         body {
@@ -26,18 +25,184 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             padding: 1rem;
+            overflow-y: hidden; /* Prevents vertical scroll/jump */
+        }
+        
+        /* -------------------------- */
+        /* MAIN CARD STYLES */
+        /* -------------------------- */
+        .auth-container {
+            width: 100%;
+            max-width: 448px; /* Equivalent to max-w-md (approx 28rem) */
+            background-color: #ffffff;
+            padding: 40px; /* Equivalent to p-10 on sm */
+            border-radius: 12px;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* shadow-lg */
+            border: 1px solid #f3f4f6; /* border-gray-100 */
         }
 
-        /* Styling for the social icons (Google and Facebook logos) */
+        .auth-header {
+            font-size: 24px; /* text-2xl */
+            font-weight: 600; /* font-semibold */
+            text-align: center;
+            color: #2c2c2c;
+            margin-bottom: 4px;
+        }
+
+        .auth-subtitle {
+            font-size: 14px; /* text-sm */
+            text-align: center;
+            color: #10b981; /* text-green-700 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px; /* mb-6 */
+        }
+        
+        .auth-subtitle span {
+            margin-right: 4px;
+        }
+
+        /* Coupon Alert */
+        .coupon-alert {
+            background-color: #fef2f2; /* bg-red-50 */
+            color: #b91c1c; /* text-red-700 */
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 24px;
+            border: 1px solid #fecaca; /* border-red-100 */
+        }
+
+        /* Form Elements */
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151; /* text-gray-700 */
+            margin-bottom: 4px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px; /* px-4 py-3 */
+            border: 1px solid #d1d5db; /* border-gray-300 */
+            border-radius: 8px;
+            transition: border-color 0.15s;
+            margin-bottom: 24px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #000000;
+            box-shadow: 0 0 0 1px #000000;
+        }
+        
+        /* Continue Button */
+        .btn-continue {
+            width: 100%;
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.15s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-continue:hover {
+            background-color: #1f2937; /* hover:bg-gray-800 */
+        }
+
+        /* Separator (Or) */
+        .separator {
+            display: flex;
+            align-items: center;
+            margin: 24px 0; /* my-6 */
+        }
+        
+        .separator-line {
+            flex-grow: 1;
+            border-top: 1px solid #d1d5db; /* border-gray-300 */
+        }
+
+        .separator-text {
+            margin: 0 16px; /* mx-4 */
+            color: #6b7280; /* text-gray-500 */
+            font-size: 14px;
+        }
+
+        /* Social Buttons */
+        .social-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* space-y-3 */
+            margin-bottom: 30px;
+        }
+
+        .btn-social {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #d1d5db;
+            background-color: #ffffff;
+            color: #374151;
+            font-weight: 500;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.15s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); /* shadow-sm */
+        }
+
+        .btn-social:hover {
+            background-color: #f9fafb; /* hover:bg-gray-50 */
+        }
+
         .social-icon {
             width: 20px;
             height: 20px;
             margin-right: 12px;
         }
-
-        /* Utility for the custom alert box */
+        
+        /* Bottom Section: Country Selector */
+        .country-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .btn-country {
+            display: inline-flex;
+            align-items: center;
+            font-size: 14px;
+            color: #4b5563; /* text-gray-600 */
+            background-color: #f3f4f6; /* bg-gray-100 */
+            padding: 8px 16px;
+            border-radius: 9999px; /* rounded-full */
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.15s;
+        }
+        
+        .btn-country:hover {
+            background-color: #e5e7eb; /* hover:bg-gray-200 */
+        }
+        
+        .btn-country svg {
+            margin-right: 4px; /* mr-1 */
+        }
+        
+        .btn-country .arrow-down {
+            margin-left: 4px; /* ml-1 */
+        }
+        
+        /* Custom Message Box */
         #custom-message-box {
             position: fixed;
             top: 20px;
@@ -56,59 +221,65 @@
             opacity: 1;
             transform: translateX(0);
         }
+        
+        /* -------------------------- */
+        /* MOBILE ADJUSTMENTS */
+        /* -------------------------- */
+        @media (max-width: 640px) {
+            .auth-container {
+                padding: 24px; /* Equivalent to p-6 */
+                border-radius: 8px;
+            }
+            
+            .auth-header {
+                font-size: 20px; /* text-xl */
+            }
+        }
+        
     </style>
 </head>
 <body>
 
-    <!-- Main Container Card -->
-    <div class="w-full max-w-md bg-white p-6 sm:p-10 rounded-xl shadow-lg border border-gray-100">
+    <div class="auth-container">
 
-        <!-- Header -->
-        <h1 class="text-xl sm:text-2xl font-semibold text-center text-primary-text mb-1">
+        <h1 class="auth-header">
             Sign In/Register
         </h1>
-        <p class="text-sm text-center text-green-700 flex items-center justify-center mb-6">
-            <!-- Lock Icon (Unicode) -->
-            <span class="mr-1">&#x1F512;</span> Your data is protected.
+        <p class="auth-subtitle">
+            <span>&#x1F512;</span> Your data is protected.
         </p>
 
-        <!-- Coupon Alert Box -->
-        <div class="bg-red-50 text-red-700 p-3 rounded-lg text-sm text-center mb-6 border border-red-100">
+        <div class="coupon-alert">
             Get 20% off coupon and more
         </div>
 
-        <!-- Form Section -->
         <form id="auth-form" onsubmit="handleContinue(event)">
-            <label for="emailOrMobile" class="block text-sm font-medium text-gray-700 mb-1">
-                Mobile number or email address:
-            </label>
-            <input 
-                type="text" 
-                id="emailOrMobile" 
-                name="emailOrMobile" 
-                placeholder="Enter mobile or email"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-black focus:border-black transition duration-150 mb-6" 
-                required
-            >
+            <div class="form-group">
+                <label for="emailOrMobile">
+                    Mobile number or email address:
+                </label>
+                <input 
+                    type="text" 
+                    id="emailOrMobile" 
+                    name="emailOrMobile" 
+                    placeholder="Enter mobile or email"
+                    required
+                >
+            </div>
             
-            <!-- Continue Button -->
-            <button type="submit" class="w-full bg-black text-white font-bold py-3 rounded-lg hover:bg-gray-800 transition duration-150 shadow-md">
+            <button type="submit" class="btn-continue">
                 CONTINUE
             </button>
         </form>
 
-        <!-- Separator -->
-        <div class="flex items-center my-6">
-            <div class="flex-grow border-t border-gray-300"></div>
-            <span class="mx-4 text-gray-500 text-sm">Or</span>
-            <div class="flex-grow border-t border-gray-300"></div>
+        <div class="separator">
+            <div class="separator-line"></div>
+            <span class="separator-text">Or</span>
+            <div class="separator-line"></div>
         </div>
 
-        <!-- Social Login Buttons -->
-        <div class="space-y-3">
-            <!-- Google Button -->
-            <button onclick="handleSocialLogin('Google')" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-50 transition duration-150 shadow-sm">
-                <!-- Google Icon SVG (simplified) -->
+        <div class="social-buttons">
+            <button onclick="handleSocialLogin('Google')" class="btn-social">
                 <svg class="social-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12.0003 4.8C9.52834 4.8 7.35034 5.617 5.64034 7.027L7.75734 9.144C8.65534 8.448 9.77134 8.016 12.0003 8.016C14.7353 8.016 16.2753 9.873 16.2753 11.52C16.2753 12.981 15.1973 13.911 13.9443 14.547L15.4673 15.776C17.3913 14.28 18.2553 12.42 18.2553 11.52C18.2553 6.942 15.6553 4.8 12.0003 4.8Z" fill="#EA4335"/>
                     <path d="M5.64034 7.027L2.24234 4.67C3.99234 2.193 6.93634 0.6 10.2933 0.6C14.6133 0.6 17.5893 2.925 18.9953 4.869L16.2753 6.825C15.5493 5.766 13.7853 4.8 12.0003 4.8C9.52834 4.8 7.35034 5.617 5.64034 7.027Z" fill="#4285F4"/>
@@ -118,9 +289,7 @@
                 Continue with Google
             </button>
 
-            <!-- Facebook Button -->
-            <button onclick="handleSocialLogin('Facebook')" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-50 transition duration-150 shadow-sm">
-                <!-- Facebook Icon SVG (simplified) -->
+            <button onclick="handleSocialLogin('Facebook')" class="btn-social">
                 <svg class="social-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path fill="#4267B2" d="M21 0H3C1.343 0 0 1.343 0 3v18c0 1.657 1.343 3 3 3h9v-9H9V12h3V9.5c0-3.072 1.83-4.78 4.67-4.78h3.33V7.78h-2.12c-.886 0-1.055.419-1.055 1.037V12h3.5l-.5 3h-3V24h6c1.657 0 3-1.343 3-3V3c0-1.657-1.343-3-3-3z"/>
                 </svg>
@@ -128,16 +297,13 @@
             </button>
         </div>
         
-        <!-- Bottom Section: Country Selector -->
-        <div class="text-center mt-10">
-            <button id="country-selector" class="inline-flex items-center text-sm text-gray-600 bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition duration-150">
-                <!-- Location Pin Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+        <div class="country-section">
+            <button id="country-selector" class="btn-country">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
                 </svg>
                 Pakistan
-                <!-- Down Arrow Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="arrow-down">
                     <path d="m6 9 6 6 6-6"/>
                 </svg>
             </button>
@@ -145,8 +311,7 @@
 
     </div>
 
-    <!-- Custom Message Box for non-alert feedback -->
-    <div id="custom-message-box" class="bg-gray-800"></div>
+    <div id="custom-message-box" style="background-color: #1f2937;"></div>
 
 
     <script>
@@ -158,16 +323,17 @@
             const box = document.getElementById('custom-message-box');
             box.textContent = message;
 
-            // Clear existing classes and set new style based on type
-            box.className = '';
-            let bgColor = 'bg-gray-800'; // Default
+            // Clear existing background style and set new style based on type
+            box.style.backgroundColor = '';
+            let bgColor = '#1f2937'; // Default (gray-800)
             if (type === 'error') {
-                bgColor = 'bg-red-600';
+                bgColor = '#dc2626'; // red-600
             } else if (type === 'info') {
-                bgColor = 'bg-blue-600';
+                bgColor = '#2563eb'; // blue-600
             }
 
-            box.classList.add(bgColor, 'show');
+            box.style.backgroundColor = bgColor;
+            box.classList.add('show');
 
             // Clear previous timer and set a new one to hide the box
             if (messageTimer) {
@@ -193,9 +359,9 @@
             if (input.includes('@')) {
                 showMessage(`Continuing with email: ${input}. You will be asked for a password or OTP.`, 'info');
             } else if (!isNaN(input) && input.length >= 7) {
-                 showMessage(`Continuing with mobile number: ${input}. An OTP will be sent to your phone.`, 'info');
+                showMessage(`Continuing with mobile number: ${input}. An OTP will be sent to your phone.`, 'info');
             } else {
-                 showMessage("Please enter a valid email or mobile number.", 'error');
+                showMessage("Please enter a valid email or mobile number.", 'error');
             }
         }
 
@@ -206,13 +372,9 @@
 
         // Handles country selector button
         document.getElementById('country-selector').addEventListener('click', () => {
-             showMessage("The country selection modal/dropdown would open here.", 'info');
+            showMessage("The country selection modal/dropdown would open here.", 'info');
         });
 
-        // Initialize Lucide icons (for the location pin)
-        document.addEventListener('DOMContentLoaded', () => {
-            lucide.createIcons();
-        });
     </script>
 
 </body>
