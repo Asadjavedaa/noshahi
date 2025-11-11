@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In/Register</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for simplicity in social icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom font import for 'Inter' */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
+        :root {
+            --primary-text: #2c2c2c;
+            --secondary-text: #6b7280;
+            --alert-bg: #fef2f2;
+            --alert-text: #b91c1c;
+            --button-bg: #000000;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        /* Styling for the social icons (Google and Facebook logos) */
+        .social-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+        }
+
+        /* Utility for the custom alert box */
+        #custom-message-box {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+
+        #custom-message-box.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Container Card -->
+    <div class="w-full max-w-md bg-white p-6 sm:p-10 rounded-xl shadow-lg border border-gray-100">
+
+        <!-- Header -->
+        <h1 class="text-xl sm:text-2xl font-semibold text-center text-primary-text mb-1">
+            Sign In/Register
+        </h1>
+        <p class="text-sm text-center text-green-700 flex items-center justify-center mb-6">
+            <!-- Lock Icon (Unicode) -->
+            <span class="mr-1">&#x1F512;</span> Your data is protected.
+        </p>
+
+        <!-- Coupon Alert Box -->
+        <div class="bg-red-50 text-red-700 p-3 rounded-lg text-sm text-center mb-6 border border-red-100">
+            Get 20% off coupon and more
+        </div>
+
+        <!-- Form Section -->
+        <form id="auth-form" onsubmit="handleContinue(event)">
+            <label for="emailOrMobile" class="block text-sm font-medium text-gray-700 mb-1">
+                Mobile number or email address:
+            </label>
+            <input 
+                type="text" 
+                id="emailOrMobile" 
+                name="emailOrMobile" 
+                placeholder="Enter mobile or email"
+                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-black focus:border-black transition duration-150 mb-6" 
+                required
+            >
+            
+            <!-- Continue Button -->
+            <button type="submit" class="w-full bg-black text-white font-bold py-3 rounded-lg hover:bg-gray-800 transition duration-150 shadow-md">
+                CONTINUE
+            </button>
+        </form>
+
+        <!-- Separator -->
+        <div class="flex items-center my-6">
+            <div class="flex-grow border-t border-gray-300"></div>
+            <span class="mx-4 text-gray-500 text-sm">Or</span>
+            <div class="flex-grow border-t border-gray-300"></div>
+        </div>
+
+        <!-- Social Login Buttons -->
+        <div class="space-y-3">
+            <!-- Google Button -->
+            <button onclick="handleSocialLogin('Google')" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-50 transition duration-150 shadow-sm">
+                <!-- Google Icon SVG (simplified) -->
+                <svg class="social-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.0003 4.8C9.52834 4.8 7.35034 5.617 5.64034 7.027L7.75734 9.144C8.65534 8.448 9.77134 8.016 12.0003 8.016C14.7353 8.016 16.2753 9.873 16.2753 11.52C16.2753 12.981 15.1973 13.911 13.9443 14.547L15.4673 15.776C17.3913 14.28 18.2553 12.42 18.2553 11.52C18.2553 6.942 15.6553 4.8 12.0003 4.8Z" fill="#EA4335"/>
+                    <path d="M5.64034 7.027L2.24234 4.67C3.99234 2.193 6.93634 0.6 10.2933 0.6C14.6133 0.6 17.5893 2.925 18.9953 4.869L16.2753 6.825C15.5493 5.766 13.7853 4.8 12.0003 4.8C9.52834 4.8 7.35034 5.617 5.64034 7.027Z" fill="#4285F4"/>
+                    <path d="M5.64034 7.027C5.22334 8.049 4.99534 9.18 4.99534 10.35C4.99534 11.52 5.22334 12.651 5.64034 13.673L2.24234 16.03C1.49434 14.637 1.09534 13.041 1.09534 11.52C1.09534 10.011 1.49434 8.415 2.24234 7.022L5.64034 7.027Z" fill="#FBBC05"/>
+                    <path d="M12.0003 18.24C9.17134 18.24 6.70234 17.382 5.06734 15.688L2.24234 18.045C3.99234 20.522 6.93634 22.115 10.2933 22.115C14.6133 22.115 17.5893 19.79 18.9953 17.846L16.2753 15.89C15.5493 16.949 13.7853 17.846 12.0003 17.846Z" fill="#34A853"/>
+                </svg>
+                Continue with Google
+            </button>
+
+            <!-- Facebook Button -->
+            <button onclick="handleSocialLogin('Facebook')" class="w-full flex items-center justify-center border border-gray-300 bg-white text-gray-700 font-medium py-3 rounded-lg hover:bg-gray-50 transition duration-150 shadow-sm">
+                <!-- Facebook Icon SVG (simplified) -->
+                <svg class="social-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="#4267B2" d="M21 0H3C1.343 0 0 1.343 0 3v18c0 1.657 1.343 3 3 3h9v-9H9V12h3V9.5c0-3.072 1.83-4.78 4.67-4.78h3.33V7.78h-2.12c-.886 0-1.055.419-1.055 1.037V12h3.5l-.5 3h-3V24h6c1.657 0 3-1.343 3-3V3c0-1.657-1.343-3-3-3z"/>
+                </svg>
+                Continue with Facebook
+            </button>
+        </div>
+        
+        <!-- Bottom Section: Country Selector -->
+        <div class="text-center mt-10">
+            <button id="country-selector" class="inline-flex items-center text-sm text-gray-600 bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition duration-150">
+                <!-- Location Pin Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-1">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+                </svg>
+                Pakistan
+                <!-- Down Arrow Icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1">
+                    <path d="m6 9 6 6 6-6"/>
+                </svg>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Custom Message Box for non-alert feedback -->
+    <div id="custom-message-box" class="bg-gray-800"></div>
+
+
+    <script>
+        // Use a variable to track the timer for message box auto-hide
+        let messageTimer;
+
+        // Function to show a custom message box instead of using alert()
+        function showMessage(message, type = 'success') {
+            const box = document.getElementById('custom-message-box');
+            box.textContent = message;
+
+            // Clear existing classes and set new style based on type
+            box.className = '';
+            let bgColor = 'bg-gray-800'; // Default
+            if (type === 'error') {
+                bgColor = 'bg-red-600';
+            } else if (type === 'info') {
+                bgColor = 'bg-blue-600';
+            }
+
+            box.classList.add(bgColor, 'show');
+
+            // Clear previous timer and set a new one to hide the box
+            if (messageTimer) {
+                clearTimeout(messageTimer);
+            }
+
+            messageTimer = setTimeout(() => {
+                box.classList.remove('show');
+            }, 3000); // Hide after 3 seconds
+        }
+
+        // Handles the main "CONTINUE" button submission
+        function handleContinue(event) {
+            event.preventDefault(); // Prevent the default form submission
+            const input = document.getElementById('emailOrMobile').value;
+            
+            if (input.trim() === '') {
+                showMessage("Please enter your mobile number or email address to continue.", 'error');
+                return;
+            }
+
+            // Simple validation simulation
+            if (input.includes('@')) {
+                showMessage(`Continuing with email: ${input}. You will be asked for a password or OTP.`, 'info');
+            } else if (!isNaN(input) && input.length >= 7) {
+                 showMessage(`Continuing with mobile number: ${input}. An OTP will be sent to your phone.`, 'info');
+            } else {
+                 showMessage("Please enter a valid email or mobile number.", 'error');
+            }
+        }
+
+        // Handles social login buttons
+        function handleSocialLogin(provider) {
+            showMessage(`Initiating login via ${provider}. A popup window would open for authorization.`, 'info');
+        }
+
+        // Handles country selector button
+        document.getElementById('country-selector').addEventListener('click', () => {
+             showMessage("The country selection modal/dropdown would open here.", 'info');
+        });
+
+        // Initialize Lucide icons (for the location pin)
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+        });
+    </script>
+
+</body>
+</html>
